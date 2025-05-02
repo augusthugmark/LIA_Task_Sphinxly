@@ -1,0 +1,34 @@
+@model List<Easyweb.Models.DrinkSummary>
+
+<section class="hero hero-page flex">
+    <div class="hero-media">
+        <img alt="coffee sign" class="ew-media" 
+             src="https://dev-augusthugmark-lia.easyweb.site/upl/images/1080412/coffee-sign.webp?t=799370220" />
+    </div>
+
+    <div class="content-standard">
+        <h1 class="size-xl m-t-4 anim">Coffee-drink of the Day (or Night)</h1>
+        <div class="text-block-sm">
+            <p>Get the latest inspiration for your coffee party with recipes from creamy classics to bold brews.</p>
+            <p>Click on any drink below to view the recipe</p>
+        </div>
+    </div>
+</section>
+
+<section class="m-standard">
+    <div class="content-standard">
+        <div class="news-list">
+            @foreach (var drink in Model)
+            {
+                <a asp-controller="Drinks" asp-action="Details" asp-route-id="@drink.idDrink" class="news-card">
+                    <div class="news-image">
+                        <img src="@drink.strDrinkThumb" alt="@drink.strDrink" />
+                    </div>
+                    <div class="content">
+                        <h3 class="m-t-z m-b-z color-white size-xs">@drink.strDrink</h3>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</section>

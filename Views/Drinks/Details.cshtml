@@ -1,0 +1,56 @@
+@model Easyweb.Models.DrinkDetailsViewModel
+
+<section class="m-standard">
+    <div class="content-standard" style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <span class="tag" style="display: inline-block; margin-bottom: 16px;" >@Model.SelectedDrink.strDrink</span>
+
+        <div class="ew-media m-b-3" style="max-width: 400px; margin: 0 auto;">
+            <img src="@Model.SelectedDrink.strDrinkThumb" alt="@Model.SelectedDrink.strDrink" style="width: 100%; border-radius: 12px;" />
+        </div>
+
+        <h3 class="size-sm m-t-2">Ingredients</h3>
+        <ul style="display: inline-block; text-align: left;">
+            @for (int i = 1; i <= 5; i++)
+            {
+                var ingredient = (string)Model.SelectedDrink.GetType().GetProperty($"strIngredient{i}")?.GetValue(Model.SelectedDrink);
+                var measure = (string)Model.SelectedDrink.GetType().GetProperty($"strMeasure{i}")?.GetValue(Model.SelectedDrink);
+                if (!string.IsNullOrWhiteSpace(ingredient))
+                {
+                    <li><strong>@measure</strong> @ingredient</li>
+                }
+            }
+        </ul>
+         <h3 class="size-sm m-t-3">Instructions</h3>
+            <ul style="display: inline-block; text-align: left;">
+                @{
+                    var steps = (Model.SelectedDrink.strInstructions ?? "").Split(new[] { ".", "?" }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var step in steps)
+                    {
+                        var trimmed = step.Trim();
+                        if (!string.IsNullOrWhiteSpace(trimmed))
+                        {
+                            <li>@trimmed.</li>
+                        }
+                    }
+                }
+            </ul>
+    </div>
+</section>
+
+<section class="m-standard">
+    <div class="content-standard">
+        <div class="news-list">
+            @foreach (var drink in Model.AllDrinks)
+            {
+                <a asp-controller="Drinks" asp-action="Details" asp-route-id="@drink.idDrink" class="news-card">
+                    <div class="news-image">
+                        <img src="@drink.strDrinkThumb" alt="@drink.strDrink" />
+                    </div>
+                    <div class="content">
+                        <h3 class="m-t-z m-b-z color-white size-xs">@drink.strDrink</h3>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</section>
